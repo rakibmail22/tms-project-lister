@@ -1,7 +1,7 @@
 package com.tms.project.api.converter;
 
-import com.tms.project.api.UserRequest;
-import com.tms.project.api.UserResponse;
+import com.tms.project.api.model.UserRequest;
+import com.tms.project.api.model.UserResponse;
 import com.tms.project.api.service.converter.TmsUserConverter;
 import com.tms.project.repository.entity.TmsUserConfig;
 import org.junit.jupiter.api.Assertions;

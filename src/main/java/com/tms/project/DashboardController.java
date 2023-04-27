@@ -12,13 +12,6 @@ public class DashboardController {
 		return "redirect:/setup";
 	}
 
-	@GetMapping(value = "/setup")
-	public String setup(Model model) {
-		var view = View.SETUP;
-		model.addAttribute("view", view);
-		return view.getPageName();
-	}
-
 	@GetMapping(value = "/projects")
 	public String projects(Model model) {
 		var view = View.PROJECT_LIST;

@@ -1,6 +1,6 @@
 package com.tms.project.utils;
 
-import com.tms.project.api.UserRequest;
+import com.tms.project.api.model.UserRequest;
 import com.tms.project.repository.entity.TmsUserConfig;
 
 import java.util.UUID;
