@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="sidebar">
+    <link rel="stylesheet" href="css/sidebars.css">
+    <h1 class="visually-hidden">TMS Project Lister</h1>
+
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a th:href="@{/setup}"  th:classappend="${view.setup} ? active : ''" class="nav-link" aria-current="page">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use th:href="@{/setup}" ></use>
+                    </svg>
+                    Setup
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/projects}" th:classappend="${view.projectList} ? active : ''" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use th:href="@{/projects}" ></use>
+                    </svg>
+                    Project List
+                </a>
+            </li>
+        </ul>
+        <hr>
+    </div>
+
+    <div class="b-example-divider b-example-vr"></div>
+    <script src="js/sidebars.js"></script>
+</div>
+</body>
+
+</html>
