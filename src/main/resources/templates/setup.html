@@ -50,7 +50,7 @@
                 <span class="input-group-text" id="basic-addon4">Password</span>
                 <span id="val-password" type="text" class="form-control" placeholder="Username" aria-label="Username"
                     aria-describedby="basic-addon4">Password</span>
-                <input type="password" id="input-password-edit" class="form-control" placeholder="Password"
+                <input type="text" id="input-password-edit" class="form-control" placeholder="Password"
                     aria-label="Password" aria-describedby="basic-addon4" style="display:none;">
                 <a th:href="@{#}" id="edit-password-link" class="input-group-text btn btn-success">
                     <span th:insert="~{_edit-icon :: edit-icon}"></span>
@@ -146,7 +146,7 @@
                     }
                 },
                 error: function (xhr) {
-                    alert('Ajax Error');
+                    alert(xhr.responseText);
                 }
             });
 
@@ -160,7 +160,7 @@
                         window.location.href = 'http://localhost:8080/setup'
                     },
                     error: function (xhr) {
-                        alert('Ajax Error for Update');
+                        alert(xhr.responseText);
                     }
                 });
             }
@@ -217,6 +217,9 @@
                     contentType: "application/json",
                     success: function (data) {
                         window.location.href = 'http://localhost:8080/setup'
+                    },
+                    error: function (xhr) {
+                        alert(xhr.responseText);
                     }
                 })
             });

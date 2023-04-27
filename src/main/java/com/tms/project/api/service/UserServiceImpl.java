@@ -4,11 +4,10 @@ import com.tms.project.api.exception.ResourceNotFoundException;
 import com.tms.project.api.model.UserRequest;
 import com.tms.project.api.model.UserResponse;
 import com.tms.project.api.service.converter.TmsUserConverter;
+import com.tms.project.api.validator.CreateUserValidator;
 import com.tms.project.repository.TmsUserConfigRepository;
 import com.tms.project.repository.entity.TmsUserConfig;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,22 +26,12 @@ public class UserServiceImpl implements UserService {
 
 	private final TmsUserConverter tmsUserConverter;
 
-	@Override
-	public UserResponse get(String id) {
-		return userConfigRepository.findByUuid(UUID.fromString(id))
-		                           .map(tmsUserConverter::convert)
-		                           .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME,
-		                                                                            RESOURCE_NOT_FOUND_MSG));
-	}
-
-	@Override
-	public Page<UserResponse> getList(int offset, int limit) {
-		return userConfigRepository.findAll(PageRequest.of(offset, limit))
-		                           .map(tmsUserConverter::convert);
-	}
+	private final CreateUserValidator createUserValidator;
 
 	@Override
 	public UserResponse create(UserRequest userRequest) {
+
+		createUserValidator.validate();
 
 		TmsUserConfig userConfig = tmsUserConverter.convert(userRequest);
 

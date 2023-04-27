@@ -28,10 +28,10 @@ public class TmsUserConfig implements Serializable {
 	@Column(nullable = false, updatable = false)
 	private UUID uuid;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 128)
 	private String username;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 128)
 	private String password;
 
 	@Version
