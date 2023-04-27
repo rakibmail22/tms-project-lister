@@ -5,6 +5,8 @@ import com.tms.project.api.UserResponse;
 import com.tms.project.repository.entity.TmsUserConfig;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class TmsUserConverter {
 
@@ -12,6 +14,7 @@ public class TmsUserConverter {
 		TmsUserConfig userConfig = new TmsUserConfig();
 		userConfig.setUsername(userRequest.username());
 		userConfig.setPassword(userRequest.password());
+		userConfig.setUuid(UUID.randomUUID());
 
 		return userConfig;
 	}
