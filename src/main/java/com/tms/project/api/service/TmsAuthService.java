@@ -1,9 +1,9 @@
 package com.tms.project.api.service;
 
 import com.tms.project.api.model.response.ConfigResponse;
-import com.tms.project.webclient.TmsAuthFeignClient;
-import com.tms.project.webclient.model.TmsAuthRequest;
-import com.tms.project.webclient.model.TmsAuthToken;
+import com.tms.project.tmsclient.TmsAuthFeignClient;
+import com.tms.project.tmsclient.model.TmsAuthRequest;
+import com.tms.project.tmsclient.model.TmsAuthToken;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -26,21 +26,19 @@ public class TmsAuthService {
 		this.getConfigService = getConfigService;
 	}
 
-	public TmsAuthToken getToken(String username, String password) {
+	public TmsAuthToken getToken() {
 		ConfigResponse config = getConfigService.getConfig();
-		username = config.username();
-		password = config.password();
 
-		TmsAuthToken cachedAuthToken = Optional.ofNullable(usernameTokenCache.get(username))
+		TmsAuthToken cachedAuthToken = Optional.ofNullable(usernameTokenCache.get(config.username()))
 		                                       .filter(this::isExpired)
 		                                       .orElse(null);
 
 		if (Objects.isNull(cachedAuthToken)) {
-			TmsAuthToken authToken = tmsAuthFeignClient.login(new TmsAuthRequest(username, password));
-			usernameTokenCache.put(username, authToken);
+			TmsAuthToken authToken = tmsAuthFeignClient.login(new TmsAuthRequest(config.username(), config.password()));
+			usernameTokenCache.put(config.username(), authToken);
 		}
 
-		return usernameTokenCache.get(username);
+		return usernameTokenCache.get(config.username());
 	}
 
 	private boolean isExpired(TmsAuthToken authToken) {

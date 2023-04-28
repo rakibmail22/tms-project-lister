@@ -1,21 +1,20 @@
 package com.tms.project.api.endpoint;
 
-import com.tms.project.webclient.TmsAuthFeignClient;
-import com.tms.project.webclient.TmsFeignClient;
-import com.tms.project.webclient.model.TmsAuthRequest;
+import com.tms.project.api.model.response.ProjectResponse;
+import com.tms.project.api.service.GetProjectService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @ApiV1Controller
 @RequiredArgsConstructor
 public class ListProjectEndpoint {
 
-	private final TmsFeignClient tmsFeignClient;
+	private final GetProjectService getProjectService;
 
 	@GetMapping(value = "/projects")
-	public ResponseEntity<?> listProjects() {
-		return ResponseEntity.ok(tmsFeignClient.getProjects());
+	public Page<ProjectResponse> listProjects(@RequestParam(defaultValue = "0") int pageNumber) {
+		return getProjectService.getList(pageNumber);
 	}
 }

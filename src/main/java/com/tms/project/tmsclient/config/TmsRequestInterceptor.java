@@ -1,7 +1,7 @@
-package com.tms.project.webclient.config;
+package com.tms.project.tmsclient.config;
 
 import com.tms.project.api.service.TmsAuthService;
-import com.tms.project.webclient.model.TmsAuthToken;
+import com.tms.project.tmsclient.model.TmsAuthToken;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class TmsRequestInterceptor implements RequestInterceptor {
 
 	@Override
 	public void apply(RequestTemplate template) {
-		TmsAuthToken token = tmsAuthService.getToken(null, null);
+		TmsAuthToken token = tmsAuthService.getToken();
 		template.header(AUTHORIZATION_HEADER, "%s %s ".formatted(API_KEY, token.token()));
 	}
 }

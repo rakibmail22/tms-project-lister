@@ -1,7 +1,7 @@
-package com.tms.project.webclient;
+package com.tms.project.tmsclient;
 
-import com.tms.project.webclient.model.TmsAuthRequest;
-import com.tms.project.webclient.model.TmsAuthToken;
+import com.tms.project.tmsclient.model.TmsAuthRequest;
+import com.tms.project.tmsclient.model.TmsAuthToken;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;

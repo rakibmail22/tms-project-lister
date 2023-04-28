@@ -1,4 +1,4 @@
-package com.tms.project.webclient.config;
+package com.tms.project.tmsclient.config;
 
 import com.tms.project.api.service.TmsAuthService;
 import org.springframework.context.annotation.Bean;
