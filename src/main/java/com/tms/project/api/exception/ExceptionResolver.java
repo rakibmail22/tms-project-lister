@@ -1,6 +1,6 @@
 package com.tms.project.api.exception;
 
-import com.tms.project.api.model.ErrorResponse;
+import com.tms.project.api.model.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

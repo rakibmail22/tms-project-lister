@@ -1,4 +1,4 @@
-package com.tms.project;
+package com.tms.project.dashboard;
 
 public enum View {
 	SETUP("setup.html"),

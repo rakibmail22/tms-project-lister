@@ -1,8 +1,8 @@
 package com.tms.project.api.service;
 
 import com.tms.project.api.exception.ResourceNotFoundException;
-import com.tms.project.api.model.UserResponse;
-import com.tms.project.api.service.converter.TmsUserConverter;
+import com.tms.project.api.model.response.ConfigResponse;
+import com.tms.project.api.service.converter.TmsUserConfigConverter;
 import com.tms.project.repository.TmsUserConfigRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class GetUserServiceImpl implements GetUserService {
+public class GetConfigServiceImpl implements GetConfigService {
 
 	private static final String RESOURCE_NAME = "TMS User Config";
 
@@ -21,35 +21,36 @@ public class GetUserServiceImpl implements GetUserService {
 
 	private final TmsUserConfigRepository userConfigRepository;
 
-	private final TmsUserConverter tmsUserConverter;
+	private final TmsUserConfigConverter tmsUserConfigConverter;
 
 	@Override
-	public UserResponse get(String id) {
+	public ConfigResponse get(String id) {
 		return userConfigRepository.findByUuid(UUID.fromString(id))
-		                           .map(tmsUserConverter::convert)
+		                           .map(tmsUserConfigConverter::convert)
 		                           .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME,
 		                                                                            RESOURCE_NOT_FOUND_MSG));
 	}
 
 	@Override
-	public Page<UserResponse> getList(int offset, int limit) {
+	public Page<ConfigResponse> getList(int offset, int limit) {
 		return userConfigRepository.findAll(PageRequest.of(offset, limit))
-		                           .map(tmsUserConverter::convert);
+		                           .map(tmsUserConfigConverter::convert);
 	}
 
 	@Override
-	public UserResponse findByUsername(String username) {
+	public ConfigResponse findByUsername(String username) {
 		return userConfigRepository.findByUsername(username)
-		                           .map(tmsUserConverter::convert)
+		                           .map(tmsUserConfigConverter::convert)
 		                           .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME,
 		                                                                            RESOURCE_NOT_FOUND_MSG));
 	}
 
 	@Override
-	public UserResponse getConfig() {
+	public ConfigResponse getConfig() {
 		return userConfigRepository.findAll().stream()
 		                           .findFirst()
-		                           .map(tmsUserConverter::convert)
-		                           .orElseThrow();
+		                           .map(tmsUserConfigConverter::convert)
+		                           .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME,
+		                                                                            RESOURCE_NOT_FOUND_MSG));
 	}
 }

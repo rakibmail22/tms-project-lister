@@ -1,8 +1,8 @@
 package com.tms.project.api.converter;
 
-import com.tms.project.api.model.UserRequest;
-import com.tms.project.api.model.UserResponse;
-import com.tms.project.api.service.converter.TmsUserConverter;
+import com.tms.project.api.model.request.ConfigRequest;
+import com.tms.project.api.model.response.ConfigResponse;
+import com.tms.project.api.service.converter.TmsUserConfigConverter;
 import com.tms.project.repository.entity.TmsUserConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,19 +16,19 @@ import static com.tms.project.utils.TestUtils.createRandomUserRequest;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class TmsUserConverterTest {
+public class TmsUserConfigConverterTest {
 
-	private final TmsUserConverter tmsUserConverter;
+	private final TmsUserConfigConverter tmsUserConfigConverter;
 
 	@Autowired
-	public TmsUserConverterTest(TmsUserConverter tmsUserConverter) {
-		this.tmsUserConverter = tmsUserConverter;
+	public TmsUserConfigConverterTest(TmsUserConfigConverter tmsUserConfigConverter) {
+		this.tmsUserConfigConverter = tmsUserConfigConverter;
 	}
 
 	@Test
 	public void convert_GivenUserRequestAsInput_ConvertsToTmsUserConfig() {
-		UserRequest request = createRandomUserRequest();
-		TmsUserConfig tmsUserConfig = tmsUserConverter.convert(request);
+		ConfigRequest request = createRandomUserRequest();
+		TmsUserConfig tmsUserConfig = tmsUserConfigConverter.convert(request);
 
 		Assertions.assertEquals(request.username(), tmsUserConfig.getUsername());
 		Assertions.assertEquals(request.password(), tmsUserConfig.getPassword());
@@ -36,16 +36,16 @@ public class TmsUserConverterTest {
 
 	@Test
 	public void convert_GivenUserRequestAsInput_ReturnsTmsUserConfigWithoutId() {
-		UserRequest request = createRandomUserRequest();
-		TmsUserConfig tmsUserConfig = tmsUserConverter.convert(request);
+		ConfigRequest request = createRandomUserRequest();
+		TmsUserConfig tmsUserConfig = tmsUserConfigConverter.convert(request);
 
 		Assertions.assertNull(tmsUserConfig.getId());
 	}
 
 	@Test
 	public void convert_GivenUserRequestAsInput_ReturnsTmsUserConfigWithUuid() {
-		UserRequest request = createRandomUserRequest();
-		TmsUserConfig tmsUserConfig = tmsUserConverter.convert(request);
+		ConfigRequest request = createRandomUserRequest();
+		TmsUserConfig tmsUserConfig = tmsUserConfigConverter.convert(request);
 
 		Assertions.assertNotNull(tmsUserConfig.getUuid());
 	}
@@ -54,10 +54,10 @@ public class TmsUserConverterTest {
 	public void convert_GivenTmsUserConfigAsInput_ConvertsToUserResponse() {
 		TmsUserConfig tmsUserConfig = createRandomTmsUserConfig();
 
-		UserResponse userResponse = tmsUserConverter.convert(tmsUserConfig);
+		ConfigResponse configResponse = tmsUserConfigConverter.convert(tmsUserConfig);
 
-		Assertions.assertEquals(tmsUserConfig.getUuid().toString(), userResponse.id());
-		Assertions.assertEquals(tmsUserConfig.getUsername(), userResponse.username());
-		Assertions.assertEquals(tmsUserConfig.getPassword(), userResponse.password());
+		Assertions.assertEquals(tmsUserConfig.getUuid().toString(), configResponse.id());
+		Assertions.assertEquals(tmsUserConfig.getUsername(), configResponse.username());
+		Assertions.assertEquals(tmsUserConfig.getPassword(), configResponse.password());
 	}
 }

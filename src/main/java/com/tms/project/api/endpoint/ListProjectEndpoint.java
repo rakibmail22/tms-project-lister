@@ -8,20 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@ApiV1Controller
 @RequiredArgsConstructor
 public class ListProjectEndpoint {
 
 	private final TmsFeignClient tmsFeignClient;
 
-	private final TmsAuthFeignClient tmsAuthFeignClient;
-
-	@GetMapping(value = "/api/v1/auth")
-	public ResponseEntity<?> getAuthToken() {
-		return ResponseEntity.ok(tmsAuthFeignClient.login(new TmsAuthRequest("rakibmail22", "HelloH!6HelloH!6")));
-	}
-
-	@GetMapping(value = "/api/v1/projects")
+	@GetMapping(value = "/projects")
 	public ResponseEntity<?> listProjects() {
 		return ResponseEntity.ok(tmsFeignClient.getProjects());
 	}

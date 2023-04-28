@@ -124,36 +124,35 @@
 
 
             $.get({
-                url: "http://localhost:8080/api/v1/users",
+                url: "http://localhost:8080/api/v1/config",
                 success: function (data) {
                     let dataStr = JSON.stringify(data);
-                    let userListResponse = JSON.parse(dataStr);
-                    if (userListResponse.empty) {
+                    let config = JSON.parse(dataStr);
+                    console.log(config);
+                    persistedConfig = config;
+                    $('#config-view').show();
+                    $('#config-create-link').hide();
+
+                    makeUsernameInputReadonly();
+                    makePasswordInputReadonly();
+
+                    $('#val-username').text(config.username);
+                    $('#val-password').text(config.password);
+                },
+                error: function (xhr) {
+                    if (xhr.status === 404) {
                         $('#config-view').hide();
                         $('#config-create-link').show();
                     } else {
-                        let config = userListResponse.content[0];
-                        console.log(config);
-                        persistedConfig = config;
-                        $('#config-view').show();
-                        $('#config-create-link').hide();
-
-                        makeUsernameInputReadonly();
-                        makePasswordInputReadonly();
-
-                        $('#val-username').text(config.username);
-                        $('#val-password').text(config.password);
+                        alert(xhr.responseText);
                     }
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
                 }
             });
 
             function putUserPayload(userConfigPayload) {
                 $.ajax({
                     type: 'PUT',
-                    url: "http://localhost:8080/api/v1/user/" + userConfigPayload.id,
+                    url: "http://localhost:8080/api/v1/config/" + userConfigPayload.id,
                     data: JSON.stringify(userConfigPayload),
                     contentType: "application/json",
                     success: function (data) {
@@ -212,7 +211,7 @@
                 };
 
                 $.post({
-                    url: "http://localhost:8080/api/v1/user",
+                    url: "http://localhost:8080/api/v1/config",
                     data: JSON.stringify(userCreateRequestPayload),
                     contentType: "application/json",
                     success: function (data) {

@@ -1,6 +1,6 @@
 package com.tms.project.api.service;
 
-import com.tms.project.api.model.UserResponse;
+import com.tms.project.api.model.response.ConfigResponse;
 import com.tms.project.webclient.TmsAuthFeignClient;
 import com.tms.project.webclient.model.TmsAuthRequest;
 import com.tms.project.webclient.model.TmsAuthToken;
@@ -14,20 +14,20 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class TmsAuthService {
 
-	private final GetUserService getUserService;
+	private final GetConfigService getConfigService;
 
 	private final TmsAuthFeignClient tmsAuthFeignClient;
 
 	private final ConcurrentHashMap<String, TmsAuthToken> usernameTokenCache;
 
-	public TmsAuthService(TmsAuthFeignClient tmsAuthFeignClient, GetUserService getUserService) {
+	public TmsAuthService(TmsAuthFeignClient tmsAuthFeignClient, GetConfigService getConfigService) {
 		this.usernameTokenCache = new ConcurrentHashMap<>();
 		this.tmsAuthFeignClient = tmsAuthFeignClient;
-		this.getUserService = getUserService;
+		this.getConfigService = getConfigService;
 	}
 
 	public TmsAuthToken getToken(String username, String password) {
-		UserResponse config = getUserService.getConfig();
+		ConfigResponse config = getConfigService.getConfig();
 		username = config.username();
 		password = config.password();
 

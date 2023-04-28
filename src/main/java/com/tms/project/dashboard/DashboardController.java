@@ -1,4 +1,4 @@
-package com.tms.project;
+package com.tms.project.dashboard;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

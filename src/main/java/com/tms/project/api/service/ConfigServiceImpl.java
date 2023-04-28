@@ -1,10 +1,10 @@
 package com.tms.project.api.service;
 
 import com.tms.project.api.exception.ResourceNotFoundException;
-import com.tms.project.api.model.UserRequest;
-import com.tms.project.api.model.UserResponse;
-import com.tms.project.api.service.converter.TmsUserConverter;
-import com.tms.project.api.validator.CreateUserValidator;
+import com.tms.project.api.model.request.ConfigRequest;
+import com.tms.project.api.model.response.ConfigResponse;
+import com.tms.project.api.service.converter.TmsUserConfigConverter;
+import com.tms.project.api.validator.CreateConfigValidator;
 import com.tms.project.repository.TmsUserConfigRepository;
 import com.tms.project.repository.entity.TmsUserConfig;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class ConfigServiceImpl implements ConfigService {
 
 	private static final String RESOURCE_NAME = "TMS User Config";
 
@@ -24,33 +24,33 @@ public class UserServiceImpl implements UserService {
 
 	private final TmsUserConfigRepository userConfigRepository;
 
-	private final TmsUserConverter tmsUserConverter;
+	private final TmsUserConfigConverter tmsUserConfigConverter;
 
-	private final CreateUserValidator createUserValidator;
+	private final CreateConfigValidator createConfigValidator;
 
 	@Override
-	public UserResponse create(UserRequest userRequest) {
+	public ConfigResponse create(ConfigRequest configRequest) {
 
-		createUserValidator.validate();
+		createConfigValidator.validate();
 
-		TmsUserConfig userConfig = tmsUserConverter.convert(userRequest);
+		TmsUserConfig userConfig = tmsUserConfigConverter.convert(configRequest);
 
 		userConfig = userConfigRepository.save(userConfig);
 
-		return tmsUserConverter.convert(userConfig);
+		return tmsUserConfigConverter.convert(userConfig);
 	}
 
 	@Override
-	public UserResponse update(String userId, UserRequest userRequest) {
+	public ConfigResponse update(String userId, ConfigRequest configRequest) {
 		TmsUserConfig userConfig = userConfigRepository.findByUuid(UUID.fromString(userId))
 		                                               .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME,
 		                                                                                                RESOURCE_NOT_FOUND_MSG));
 
-		userConfig.setUsername(userRequest.username());
-		userConfig.setPassword(userRequest.password());
+		userConfig.setUsername(configRequest.username());
+		userConfig.setPassword(configRequest.password());
 
 		userConfig = userConfigRepository.save(userConfig);
 
-		return tmsUserConverter.convert(userConfig);
+		return tmsUserConfigConverter.convert(userConfig);
 	}
 }
