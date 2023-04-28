@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface TmsUserConfigRepository extends JpaRepository<TmsUserConfig, Integer> {
 
 	Optional<TmsUserConfig> findByUuid(UUID uuid);
+
+	Optional<TmsUserConfig> findByUsername(String username);
 }

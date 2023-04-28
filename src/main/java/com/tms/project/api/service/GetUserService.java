@@ -8,4 +8,8 @@ public interface GetUserService {
 	UserResponse get(String id);
 
 	Page<UserResponse> getList(int offset, int limit);
+
+	UserResponse getConfig();
+
+	UserResponse findByUsername(String username);
 }

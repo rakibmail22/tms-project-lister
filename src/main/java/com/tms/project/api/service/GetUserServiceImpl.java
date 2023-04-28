@@ -36,4 +36,20 @@ public class GetUserServiceImpl implements GetUserService {
 		return userConfigRepository.findAll(PageRequest.of(offset, limit))
 		                           .map(tmsUserConverter::convert);
 	}
+
+	@Override
+	public UserResponse findByUsername(String username) {
+		return userConfigRepository.findByUsername(username)
+		                           .map(tmsUserConverter::convert)
+		                           .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME,
+		                                                                            RESOURCE_NOT_FOUND_MSG));
+	}
+
+	@Override
+	public UserResponse getConfig() {
+		return userConfigRepository.findAll().stream()
+		                           .findFirst()
+		                           .map(tmsUserConverter::convert)
+		                           .orElseThrow();
+	}
 }
