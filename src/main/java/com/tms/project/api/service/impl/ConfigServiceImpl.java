@@ -5,7 +5,7 @@ import com.tms.project.api.model.request.ConfigRequest;
 import com.tms.project.api.model.response.ConfigResponse;
 import com.tms.project.api.service.ConfigService;
 import com.tms.project.api.service.converter.TmsUserConfigConverter;
-import com.tms.project.api.validator.CreateConfigValidator;
+import com.tms.project.api.validator.ConfigValidator;
 import com.tms.project.repository.TmsUserConfigRepository;
 import com.tms.project.repository.entity.TmsUserConfig;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +27,12 @@ public class ConfigServiceImpl implements ConfigService {
 
 	private final TmsUserConfigConverter tmsUserConfigConverter;
 
-	private final CreateConfigValidator createConfigValidator;
+	private final ConfigValidator configValidator;
 
 	@Override
 	public ConfigResponse create(ConfigRequest configRequest) {
 
-		createConfigValidator.validate();
+		configValidator.validate();
 
 		TmsUserConfig userConfig = tmsUserConfigConverter.convert(configRequest);
 
@@ -43,6 +43,8 @@ public class ConfigServiceImpl implements ConfigService {
 
 	@Override
 	public ConfigResponse update(String userId, ConfigRequest configRequest) {
+		configValidator.validate();
+
 		TmsUserConfig userConfig = userConfigRepository.findByUuid(UUID.fromString(userId))
 		                                               .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME,
 		                                                                                                RESOURCE_NOT_FOUND_MSG));

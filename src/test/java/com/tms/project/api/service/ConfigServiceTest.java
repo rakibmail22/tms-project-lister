@@ -4,6 +4,7 @@ import com.tms.project.api.model.request.ConfigRequest;
 import com.tms.project.api.model.response.ConfigResponse;
 import com.tms.project.api.service.converter.TmsUserConfigConverter;
 import com.tms.project.api.service.impl.ConfigServiceImpl;
+import com.tms.project.api.validator.ConfigValidator;
 import com.tms.project.repository.TmsUserConfigRepository;
 import com.tms.project.repository.entity.TmsUserConfig;
 import com.tms.project.utils.TestUtils;
@@ -17,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,8 +30,11 @@ public class ConfigServiceTest {
 	@Mock
 	private TmsUserConfigConverter tmsUserConfigConverter;
 
+	@Mock
+	private ConfigValidator configValidator;
+
 	@InjectMocks
-	private ConfigServiceImpl userService;
+	private ConfigServiceImpl configService;
 
 	@Test
 	public void save_GivenAValidUserRequest_convertsTheRequestCallsRepoSaveAndReturnsResponse() {
@@ -46,7 +51,7 @@ public class ConfigServiceTest {
 		Mockito.when(tmsUserConfigRepository.save(ArgumentMatchers.any(TmsUserConfig.class)))
 		       .thenReturn(mockTmsUserConfig);
 
-		ConfigResponse configResponse = userService.create(mockConfigRequest);
+		ConfigResponse configResponse = configService.create(mockConfigRequest);
 
 		Assertions.assertEquals(mockConfigRequest.username(), configResponse.username());
 		Assertions.assertEquals(mockConfigRequest.password(), configResponse.password());
@@ -54,6 +59,75 @@ public class ConfigServiceTest {
 		InOrder inOrder = Mockito.inOrder(tmsUserConfigConverter, tmsUserConfigRepository);
 
 		inOrder.verify(tmsUserConfigConverter).convert(ArgumentMatchers.any(ConfigRequest.class));
+		inOrder.verify(tmsUserConfigRepository).save(ArgumentMatchers.any(TmsUserConfig.class));
+		inOrder.verify(tmsUserConfigConverter).convert(ArgumentMatchers.any(TmsUserConfig.class));
+	}
+
+	@Test
+	public void save_GivenInvalidUserRequest_validatorIsCalled() {
+		ConfigRequest mockConfigRequest = TestUtils.createRandomUserRequest();
+		TmsUserConfig mockTmsUserConfig = getMockConfigFromRequest(mockConfigRequest);
+		ConfigResponse mockConfigResponse = getMockUserResponse(mockTmsUserConfig);
+
+		Mockito.when(tmsUserConfigConverter.convert(ArgumentMatchers.any(ConfigRequest.class)))
+		       .thenReturn(mockTmsUserConfig);
+
+		Mockito.when(tmsUserConfigConverter.convert(ArgumentMatchers.any(TmsUserConfig.class)))
+		       .thenReturn(mockConfigResponse);
+
+		Mockito.when(tmsUserConfigRepository.save(ArgumentMatchers.any(TmsUserConfig.class)))
+		       .thenReturn(mockTmsUserConfig);
+
+		ConfigResponse configResponse = configService.create(mockConfigRequest);
+
+		Mockito.verify(configValidator).validate();
+	}
+
+	@Test
+	public void update_GivenInvalidUserRequest_validatorIsCalled() {
+		String userId = UUID.randomUUID().toString();
+		ConfigRequest mockConfigRequest = TestUtils.createRandomUserRequest();
+		TmsUserConfig mockTmsUserConfig = getMockConfigFromRequest(mockConfigRequest);
+		ConfigResponse mockConfigResponse = getMockUserResponse(mockTmsUserConfig);
+
+		Mockito.when(tmsUserConfigConverter.convert(ArgumentMatchers.any(TmsUserConfig.class)))
+		       .thenReturn(mockConfigResponse);
+
+		Mockito.when(tmsUserConfigRepository.save(ArgumentMatchers.any(TmsUserConfig.class)))
+		       .thenReturn(mockTmsUserConfig);
+
+		Mockito.when(tmsUserConfigRepository.findByUuid(ArgumentMatchers.any(UUID.class)))
+		       .thenReturn(Optional.of(mockTmsUserConfig));
+
+		ConfigResponse configResponse = configService.update(userId, mockConfigRequest);
+
+		Mockito.verify(configValidator).validate();
+	}
+
+	@Test
+	public void update_GivenAValidUserRequest_convertsTheRequestCallsRepoSaveAndReturnsResponse() {
+		String userId = UUID.randomUUID().toString();
+		ConfigRequest mockConfigRequest = TestUtils.createRandomUserRequest();
+		TmsUserConfig mockTmsUserConfig = getMockConfigFromRequest(mockConfigRequest);
+		ConfigResponse mockConfigResponse = getMockUserResponse(mockTmsUserConfig);
+
+		Mockito.when(tmsUserConfigConverter.convert(ArgumentMatchers.any(TmsUserConfig.class)))
+		       .thenReturn(mockConfigResponse);
+
+		Mockito.when(tmsUserConfigRepository.save(ArgumentMatchers.any(TmsUserConfig.class)))
+		       .thenReturn(mockTmsUserConfig);
+
+		Mockito.when(tmsUserConfigRepository.findByUuid(ArgumentMatchers.any(UUID.class)))
+		       .thenReturn(Optional.of(mockTmsUserConfig));
+
+		ConfigResponse configResponse = configService.update(userId, mockConfigRequest);
+
+		Assertions.assertEquals(mockConfigRequest.username(), configResponse.username());
+		Assertions.assertEquals(mockConfigRequest.password(), configResponse.password());
+
+		InOrder inOrder = Mockito.inOrder(tmsUserConfigConverter, tmsUserConfigRepository);
+
+		inOrder.verify(tmsUserConfigRepository).findByUuid(ArgumentMatchers.any(UUID.class));
 		inOrder.verify(tmsUserConfigRepository).save(ArgumentMatchers.any(TmsUserConfig.class));
 		inOrder.verify(tmsUserConfigConverter).convert(ArgumentMatchers.any(TmsUserConfig.class));
 	}
