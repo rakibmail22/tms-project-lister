@@ -1,6 +1,7 @@
-package com.tms.project.api.service;
+package com.tms.project.api.service.impl;
 
 import com.tms.project.api.model.response.ProjectResponse;
+import com.tms.project.api.service.GetProjectService;
 import com.tms.project.api.service.converter.TmsProjectConverter;
 import com.tms.project.tmsclient.TmsFeignClient;
 import com.tms.project.tmsclient.model.TmsProjectResponsePage;

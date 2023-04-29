@@ -1,8 +1,9 @@
-package com.tms.project.api.service;
+package com.tms.project.api.service.impl;
 
 import com.tms.project.api.exception.ResourceNotFoundException;
 import com.tms.project.api.model.request.ConfigRequest;
 import com.tms.project.api.model.response.ConfigResponse;
+import com.tms.project.api.service.ConfigService;
 import com.tms.project.api.service.converter.TmsUserConfigConverter;
 import com.tms.project.api.validator.CreateConfigValidator;
 import com.tms.project.repository.TmsUserConfigRepository;

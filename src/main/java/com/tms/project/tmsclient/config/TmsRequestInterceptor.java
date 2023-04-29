@@ -1,6 +1,6 @@
 package com.tms.project.tmsclient.config;
 
-import com.tms.project.api.service.TmsAuthService;
+import com.tms.project.api.service.TmsTokenStore;
 import com.tms.project.tmsclient.model.TmsAuthToken;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -15,11 +15,11 @@ public class TmsRequestInterceptor implements RequestInterceptor {
 
 	private static final String API_KEY = "ApiToken";
 
-	private final TmsAuthService tmsAuthService;
+	private final TmsTokenStore tmsTokenStore;
 
 	@Override
 	public void apply(RequestTemplate template) {
-		TmsAuthToken token = tmsAuthService.getToken();
+		TmsAuthToken token = tmsTokenStore.getToken();
 		template.header(AUTHORIZATION_HEADER, "%s %s ".formatted(API_KEY, token.token()));
 	}
 }

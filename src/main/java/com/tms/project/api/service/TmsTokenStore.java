@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-public class TmsAuthService {
+public class TmsTokenStore {
 
 	private final GetConfigService getConfigService;
 
@@ -20,7 +20,7 @@ public class TmsAuthService {
 
 	private final ConcurrentHashMap<String, TmsAuthToken> usernameTokenCache;
 
-	public TmsAuthService(TmsAuthFeignClient tmsAuthFeignClient, GetConfigService getConfigService) {
+	public TmsTokenStore(TmsAuthFeignClient tmsAuthFeignClient, GetConfigService getConfigService) {
 		this.usernameTokenCache = new ConcurrentHashMap<>();
 		this.tmsAuthFeignClient = tmsAuthFeignClient;
 		this.getConfigService = getConfigService;
