@@ -14,7 +14,8 @@ public class ListProjectEndpoint {
 	private final GetProjectService getProjectService;
 
 	@GetMapping(value = "/projects")
-	public Page<ProjectResponse> listProjects(@RequestParam(defaultValue = "0") int pageNumber) {
-		return getProjectService.getList(pageNumber);
+	public Page<ProjectResponse> listProjects(@RequestParam(defaultValue = "0") int pageNumber,
+	                                          @RequestParam(defaultValue = "10") int pageSize) {
+		return getProjectService.getList(pageNumber, pageSize);
 	}
 }

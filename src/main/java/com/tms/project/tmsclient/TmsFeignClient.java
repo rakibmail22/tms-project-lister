@@ -1,9 +1,8 @@
 package com.tms.project.tmsclient;
 
 import com.tms.project.tmsclient.config.TmsFeignConfig;
-import com.tms.project.tmsclient.model.TmsProjectResponse;
+import com.tms.project.tmsclient.model.TmsProjectResponsePage;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -14,5 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface TmsFeignClient {
 
 	@GetMapping(value = "/projects")
-	Page<TmsProjectResponse> getProjects(@RequestParam(defaultValue = "0") int pageNumber);
+	TmsProjectResponsePage getProjects(@RequestParam(defaultValue = "0") int pageNumber,
+	                                   @RequestParam(defaultValue = "1") int pageSize);
 }
