@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ConfigValidator {
+public class CreateConfigValidator {
 
 	private final GetConfigService getConfigService;
 

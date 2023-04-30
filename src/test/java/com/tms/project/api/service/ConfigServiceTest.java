@@ -4,7 +4,7 @@ import com.tms.project.api.model.request.ConfigRequest;
 import com.tms.project.api.model.response.ConfigResponse;
 import com.tms.project.api.service.converter.TmsUserConfigConverter;
 import com.tms.project.api.service.impl.ConfigServiceImpl;
-import com.tms.project.api.validator.ConfigValidator;
+import com.tms.project.api.validator.CreateConfigValidator;
 import com.tms.project.repository.TmsUserConfigRepository;
 import com.tms.project.repository.entity.TmsUserConfig;
 import com.tms.project.utils.TestUtils;
@@ -31,7 +31,7 @@ public class ConfigServiceTest {
 	private TmsUserConfigConverter tmsUserConfigConverter;
 
 	@Mock
-	private ConfigValidator configValidator;
+	private CreateConfigValidator createConfigValidator;
 
 	@InjectMocks
 	private ConfigServiceImpl configService;
@@ -80,28 +80,7 @@ public class ConfigServiceTest {
 
 		ConfigResponse configResponse = configService.create(mockConfigRequest);
 
-		Mockito.verify(configValidator).validate();
-	}
-
-	@Test
-	public void update_GivenInvalidUserRequest_validatorIsCalled() {
-		String userId = UUID.randomUUID().toString();
-		ConfigRequest mockConfigRequest = TestUtils.createRandomUserRequest();
-		TmsUserConfig mockTmsUserConfig = getMockConfigFromRequest(mockConfigRequest);
-		ConfigResponse mockConfigResponse = getMockUserResponse(mockTmsUserConfig);
-
-		Mockito.when(tmsUserConfigConverter.convert(ArgumentMatchers.any(TmsUserConfig.class)))
-		       .thenReturn(mockConfigResponse);
-
-		Mockito.when(tmsUserConfigRepository.save(ArgumentMatchers.any(TmsUserConfig.class)))
-		       .thenReturn(mockTmsUserConfig);
-
-		Mockito.when(tmsUserConfigRepository.findByUuid(ArgumentMatchers.any(UUID.class)))
-		       .thenReturn(Optional.of(mockTmsUserConfig));
-
-		ConfigResponse configResponse = configService.update(userId, mockConfigRequest);
-
-		Mockito.verify(configValidator).validate();
+		Mockito.verify(createConfigValidator).validate();
 	}
 
 	@Test
