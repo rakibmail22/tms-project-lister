@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
-		name = "tmsApiClient",
-		url = "https://cloud.memsource.com/web/api2/v1",
+		name = "${tms.client.api.name}",
+		url = "${tms.client.api.url}",
 		configuration = TmsFeignConfig.class)
 public interface TmsFeignClient {
 

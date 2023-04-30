@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "tmsApiAuthClient", url = "https://cloud.memsource.com/web/api2/v1/auth")
+@FeignClient(name = "${tms.client.auth.name}", url = "${tms.client.auth.url}")
 public interface TmsAuthFeignClient {
 
 	@GetMapping(value = "/login")
