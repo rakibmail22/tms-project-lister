@@ -1,5 +1,12 @@
 # tms-project-lister
 
+## Features
+1. Only one config can be saved.
+2. The config can be updated
+3. There is a validation in place if a user try to save multiple config (bypassing front end)
+4. Assumed there's no rate limit of calling tms api for project list, therefore, delegated
+request directly from this service without maintaining any queue (for throttling).
+
 ## How To Run
 ##### Run With gradle (Dev Profile) :: Pre Requisite: jdk 17
 1. navigate to repository root
