@@ -30,7 +30,7 @@ public class TmsTokenStore {
 		ConfigResponse config = getConfigService.getConfig();
 
 		TmsAuthToken cachedAuthToken = Optional.ofNullable(usernameTokenCache.get(config.username()))
-		                                       .filter(this::isExpired)
+		                                       .filter(token -> !isExpired(token))
 		                                       .orElse(null);
 
 		if (Objects.isNull(cachedAuthToken)) {
